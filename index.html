@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wax & Know — Collect. Learn. Discover.</title>
+  <meta name="description" content="The vinyl companion that teaches you music history while building your collection. Scan records, track prices, and explore the roots of jazz, soul, hip hop and more." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Serif+Display:ital@0;1&family=Karla:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #F5EDD8;
+      --cream-dark: #EDE0C4;
+      --cream-darker: #E0D0A8;
+      --brown-deep: #2C1A0E;
+      --brown-mid: #5C3A1E;
+      --brown-light: #8B5E3C;
+      --amber: #C8822A;
+      --amber-light: #E8A84A;
+      --red-label: #B03A2E;
+      --green-label: #2E6B4F;
+      --groove: #1A0F06;
+      --ink: #1E120A;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--cream);
+      color: var(--brown-deep);
+      font-family: 'Karla', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* Grain texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.04;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    /* ── HEADER ── */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2rem 4rem;
+      border-bottom: 1px solid var(--cream-darker);
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 1.5rem;
+      color: var(--brown-deep);
+      letter-spacing: -0.02em;
+    }
+
+    .logo span {
+      color: var(--amber);
+    }
+
+    nav a {
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--brown-mid);
+      text-decoration: none;
+      margin-left: 2rem;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: var(--amber); }
+
+    /* ── HERO ── */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 90vh;
+      align-items: center;
+      padding: 4rem;
+      gap: 4rem;
+      position: relative;
+    }
+
+    .hero-text {
+      max-width: 540px;
+      animation: fadeUp 0.9s ease both;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 2rem;
+      height: 1px;
+      background: var(--amber);
+    }
+
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(3.2rem, 5.5vw, 5.5rem);
+      line-height: 1.0;
+      color: var(--brown-deep);
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--amber);
+    }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: var(--brown-mid);
+      margin-bottom: 2.5rem;
+      max-width: 420px;
+    }
+
+    /* Waitlist form */
+    .waitlist-form {
+      display: flex;
+      gap: 0;
+      max-width: 420px;
+      border: 1.5px solid var(--brown-mid);
+      border-radius: 2px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .waitlist-form:focus-within {
+      border-color: var(--amber);
+    }
+
+    .waitlist-form input {
+      flex: 1;
+      padding: 0.9rem 1.2rem;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: 'Karla', sans-serif;
+      font-size: 0.9rem;
+      color: var(--brown-deep);
+    }
+
+    .waitlist-form input::placeholder {
+      color: var(--brown-light);
+    }
+
+    .waitlist-form button {
+      padding: 0.9rem 1.6rem;
+      background: var(--brown-deep);
+      color: var(--cream);
+      border: none;
+      font-family: 'Karla', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+
+    .waitlist-form button:hover {
+      background: var(--amber);
+    }
+
+    .form-note {
+      margin-top: 0.75rem;
+      font-size: 0.75rem;
+      color: var(--brown-light);
+      letter-spacing: 0.03em;
+    }
+
+    .success-msg {
+      display: none;
+      padding: 0.9rem 1.2rem;
+      background: var(--green-label);
+      color: var(--cream);
+      font-size: 0.85rem;
+      letter-spacing: 0.04em;
+      border-radius: 2px;
+      max-width: 420px;
+    }
+
+    /* ── VINYL ILLUSTRATION ── */
+    .hero-visual {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      animation: fadeUp 1.1s 0.15s ease both;
+    }
+
+    .record-wrap {
+      position: relative;
+      width: 420px;
+      height: 420px;
+    }
+
+    .record {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: radial-gradient(circle at 50% 50%,
+        #2a1a0a 0%,
+        #1a0f06 8%,
+        #0d0704 12%,
+        #1a0f06 15%,
+        #0d0704 20%,
+        #1a0f06 25%,
+        #0d0704 30%,
+        #1a0f06 35%,
+        #0d0704 40%,
+        #1a0f06 45%,
+        #0d0704 50%,
+        #1a0f06 55%,
+        #0d0704 60%,
+        #1a0f06 65%,
+        #0d0704 68%,
+        #2a1a0a 70%
+      );
+      box-shadow:
+        0 30px 80px rgba(44, 26, 14, 0.35),
+        0 10px 30px rgba(44, 26, 14, 0.2),
+        inset 0 0 60px rgba(0,0,0,0.4);
+      animation: spin 18s linear infinite;
+      position: relative;
+    }
+
+    /* Groove lines */
+    .record::before {
+      content: '';
+      position: absolute;
+      inset: 5%;
+      border-radius: 50%;
+      background: repeating-radial-gradient(
+        circle at 50%,
+        transparent 0px,
+        transparent 3px,
+        rgba(255,255,255,0.018) 3px,
+        rgba(255,255,255,0.018) 4px
+      );
+    }
+
+    /* Center label */
+    .record-label {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 32%;
+      height: 32%;
+      border-radius: 50%;
+      background: var(--cream-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.15rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    }
+
+    .label-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 0.55rem;
+      color: var(--brown-deep);
+      letter-spacing: 0.06em;
+      text-align: center;
+      line-height: 1.1;
+    }
+
+    .label-line {
+      width: 50%;
+      height: 1px;
+      background: var(--amber);
+      margin: 0.1rem 0;
+    }
+
+    .label-sub {
+      font-family: 'Karla', sans-serif;
+      font-size: 0.38rem;
+      color: var(--brown-mid);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .label-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--brown-deep);
+      margin-top: 0.2rem;
+    }
+
+    /* Shadow under record */
+    .record-shadow {
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 30px;
+      background: radial-gradient(ellipse, rgba(44,26,14,0.3) 0%, transparent 70%);
+      filter: blur(10px);
+    }
+
+    /* Floating tags around record */
+    .float-tag {
+      position: absolute;
+      background: var(--cream-dark);
+      border: 1px solid var(--cream-darker);
+      border-radius: 2px;
+      padding: 0.5rem 0.9rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      color: var(--brown-mid);
+      box-shadow: 2px 4px 12px rgba(44,26,14,0.12);
+      white-space: nowrap;
+    }
+
+    .float-tag strong {
+      color: var(--brown-deep);
+      font-weight: 500;
+    }
+
+    .tag-1 { top: 6%; left: -8%; animation: floatA 4s ease-in-out infinite; }
+    .tag-2 { top: 18%; right: -10%; animation: floatB 4.5s ease-in-out infinite 0.5s; }
+    .tag-3 { bottom: 22%; left: -12%; animation: floatA 5s ease-in-out infinite 1s; }
+    .tag-4 { bottom: 8%; right: -8%; animation: floatB 4.2s ease-in-out infinite 0.3s; }
+
+    /* ── DIVIDER ── */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 0 4rem;
+      margin: 0 0 5rem;
+    }
+
+    .divider-line { flex: 1; height: 1px; background: var(--cream-darker); }
+    .divider-text {
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--brown-light);
+    }
+
+    /* ── FEATURES ── */
+    .features {
+      padding: 0 4rem 6rem;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--cream-darker);
+      border: 1px solid var(--cream-darker);
+    }
+
+    .feature-card {
+      background: var(--cream);
+      padding: 3rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+
+    .feature-card:hover {
+      background: var(--cream-dark);
+    }
+
+    .feature-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 4rem;
+      font-weight: 900;
+      color: var(--cream-darker);
+      line-height: 1;
+      margin-bottom: 1rem;
+      transition: color 0.3s;
+    }
+
+    .feature-card:hover .feature-number {
+      color: var(--amber-light);
+    }
+
+    .feature-icon {
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.4rem;
+      color: var(--brown-deep);
+      margin-bottom: 0.75rem;
+      line-height: 1.2;
+    }
+
+    .feature-desc {
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: var(--brown-mid);
+    }
+
+    /* ── GENRES STRIP ── */
+    .genres-section {
+      background: var(--brown-deep);
+      padding: 5rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .genres-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-radial-gradient(
+        circle at 50%,
+        transparent 0px,
+        transparent 5px,
+        rgba(255,255,255,0.008) 5px,
+        rgba(255,255,255,0.008) 6px
+      );
+    }
+
+    .genres-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .genres-label::before {
+      content: '';
+      width: 2rem;
+      height: 1px;
+      background: var(--amber);
+      display: block;
+    }
+
+    .genres-heading {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      color: var(--cream);
+      max-width: 600px;
+      line-height: 1.15;
+      margin-bottom: 3rem;
+    }
+
+    .genres-heading em {
+      font-style: italic;
+      color: var(--amber-light);
+    }
+
+    .genre-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .genre-pill {
+      padding: 0.6rem 1.4rem;
+      border: 1px solid rgba(245, 237, 216, 0.2);
+      border-radius: 100px;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      color: var(--cream-dark);
+      cursor: default;
+      transition: all 0.25s;
+      position: relative;
+    }
+
+    .genre-pill:hover {
+      background: var(--amber);
+      border-color: var(--amber);
+      color: var(--brown-deep);
+      transform: translateY(-2px);
+    }
+
+    .genre-pill.featured {
+      background: rgba(200, 130, 42, 0.15);
+      border-color: rgba(200, 130, 42, 0.4);
+      color: var(--amber-light);
+    }
+
+    /* ── HOW IT WORKS ── */
+    .how {
+      padding: 6rem 4rem;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .section-label::before {
+      content: '';
+      width: 2rem;
+      height: 1px;
+      background: var(--amber);
+      display: block;
+    }
+
+    .section-heading {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      color: var(--brown-deep);
+      margin-bottom: 4rem;
+      max-width: 500px;
+      line-height: 1.2;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+    }
+
+    .step {
+      position: relative;
+    }
+
+    .step-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--amber);
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+    }
+
+    .step-bar {
+      height: 2px;
+      background: var(--cream-darker);
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .step-bar::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 40%;
+      background: var(--amber);
+    }
+
+    .step-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.2rem;
+      color: var(--brown-deep);
+      margin-bottom: 0.75rem;
+    }
+
+    .step-desc {
+      font-size: 0.85rem;
+      line-height: 1.7;
+      color: var(--brown-mid);
+    }
+
+    /* ── BOTTOM CTA ── */
+    .cta-section {
+      background: var(--cream-dark);
+      border-top: 1px solid var(--cream-darker);
+      padding: 6rem 4rem;
+      text-align: center;
+    }
+
+    .cta-section .hero-eyebrow {
+      justify-content: center;
+    }
+
+    .cta-section h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.5rem, 4vw, 4rem);
+      color: var(--brown-deep);
+      margin-bottom: 1rem;
+      line-height: 1.1;
+    }
+
+    .cta-section h2 em {
+      font-style: italic;
+      color: var(--amber);
+    }
+
+    .cta-section p {
+      font-size: 1rem;
+      color: var(--brown-mid);
+      margin-bottom: 2.5rem;
+    }
+
+    .cta-form {
+      display: flex;
+      gap: 0;
+      max-width: 420px;
+      margin: 0 auto;
+      border: 1.5px solid var(--brown-mid);
+      border-radius: 2px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .cta-form:focus-within { border-color: var(--amber); }
+
+    .cta-form input {
+      flex: 1;
+      padding: 0.9rem 1.2rem;
+      background: var(--cream);
+      border: none;
+      outline: none;
+      font-family: 'Karla', sans-serif;
+      font-size: 0.9rem;
+      color: var(--brown-deep);
+    }
+
+    .cta-form input::placeholder { color: var(--brown-light); }
+
+    .cta-form button {
+      padding: 0.9rem 1.6rem;
+      background: var(--brown-deep);
+      color: var(--cream);
+      border: none;
+      font-family: 'Karla', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+
+    .cta-form button:hover { background: var(--amber); }
+
+    .cta-success {
+      display: none;
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.2rem;
+      color: var(--green-label);
+      margin-top: 1rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2rem 4rem;
+      border-top: 1px solid var(--cream-darker);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 1rem;
+      color: var(--brown-deep);
+    }
+
+    .footer-logo span { color: var(--amber); }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .footer-links a {
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      color: var(--brown-light);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--amber); }
+
+    .footer-copy {
+      font-size: 0.72rem;
+      color: var(--brown-light);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── PRIVACY PAGE ── */
+    #privacy {
+      display: none;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 4rem 2rem 6rem;
+    }
+
+    #privacy h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.5rem;
+      color: var(--brown-deep);
+      margin-bottom: 0.5rem;
+    }
+
+    #privacy .updated {
+      font-size: 0.8rem;
+      color: var(--brown-light);
+      letter-spacing: 0.06em;
+      margin-bottom: 3rem;
+      display: block;
+    }
+
+    #privacy h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.25rem;
+      color: var(--brown-deep);
+      margin: 2rem 0 0.75rem;
+    }
+
+    #privacy p, #privacy li {
+      font-size: 0.9rem;
+      line-height: 1.8;
+      color: var(--brown-mid);
+    }
+
+    #privacy ul {
+      padding-left: 1.5rem;
+      margin-top: 0.5rem;
+    }
+
+    #privacy li { margin-bottom: 0.4rem; }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--amber);
+      text-decoration: none;
+      margin-bottom: 2rem;
+      cursor: pointer;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes floatA {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @keyframes floatB {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(6px); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      header { padding: 1.5rem 2rem; }
+      nav { display: none; }
+      .hero { grid-template-columns: 1fr; padding: 3rem 2rem; min-height: auto; gap: 3rem; }
+      .hero-visual { order: -1; }
+      .record-wrap { width: 280px; height: 280px; }
+      .tag-1, .tag-2, .tag-3, .tag-4 { display: none; }
+      .features { padding: 0 2rem 4rem; }
+      .features-grid { grid-template-columns: 1fr; }
+      .genres-section { padding: 4rem 2rem; }
+      .how { padding: 4rem 2rem; }
+      .steps { grid-template-columns: 1fr 1fr; }
+      .cta-section { padding: 4rem 2rem; }
+      footer { padding: 2rem; flex-direction: column; text-align: center; }
+      .divider { padding: 0 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- MAIN PAGE -->
+<div id="main-page">
+
+  <header>
+    <div class="logo">Wax <span>&</span> Know</div>
+    <nav>
+      <a href="#features">Features</a>
+      <a href="#how">How It Works</a>
+      <a href="#" onclick="showPrivacy(event)">Privacy</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-text">
+      <div class="hero-eyebrow">Coming Soon — iOS App</div>
+      <h1>Collect <em>vinyl.</em><br>Know its soul.</h1>
+      <p class="hero-sub">
+        The vinyl companion that educates you through music history while you build your collection. Scan records, track Amazon prices, and explore the roots of jazz, soul, hip hop and beyond.
+      </p>
+
+      <div class="waitlist-form" id="hero-form-wrap">
+        <input type="email" id="hero-email" placeholder="Your email address" />
+        <button onclick="submitWaitlist('hero')">Join Waitlist</button>
+      </div>
+      <div class="success-msg" id="hero-success">
+        ✦ You're on the list. We'll be in touch.
+      </div>
+      <p class="form-note">No spam. Just a note when we launch.</p>
+    </div>
+
+    <div class="hero-visual">
+      <div class="record-wrap">
+        <div class="record">
+          <div class="record-label">
+            <div class="label-title">WAX &<br>KNOW</div>
+            <div class="label-line"></div>
+            <div class="label-sub">Est. 2026</div>
+            <div class="label-dot"></div>
+          </div>
+        </div>
+        <div class="record-shadow"></div>
+
+        <div class="float-tag tag-1">📀 <strong>Blue Train</strong> — Coltrane, 1957</div>
+        <div class="float-tag tag-2">💰 $24.99 on Amazon</div>
+        <div class="float-tag tag-3">📉 Price dropped <strong>12%</strong></div>
+        <div class="float-tag tag-4">🎵 Rooted in <strong>Hard Bop</strong></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-text">For the serious collector & the curious beginner</div>
+    <div class="divider-line"></div>
+  </div>
+
+  <!-- FEATURES -->
+  <section class="features" id="features">
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-number">01</div>
+        <div class="feature-icon">📷</div>
+        <div class="feature-title">Scan Your Collection</div>
+        <p class="feature-desc">Point your camera at any vinyl barcode or album cover. Wax & Know identifies it instantly and adds it to your collection — or import your Amazon order history in one go.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-number">02</div>
+        <div class="feature-icon">📉</div>
+        <div class="feature-title">Track Amazon Prices</div>
+        <p class="feature-desc">Watch the price history of any vinyl on Amazon. Get notified the moment a record on your wishlist drops in price — so you buy at the right moment, every time.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-number">03</div>
+        <div class="feature-icon">🎓</div>
+        <div class="feature-title">Learn the History</div>
+        <p class="feature-desc">Every record is a doorway. Explore genre timelines, cultural roots, sample lineages, and the stories that connect Blue Note Jazz to J Dilla to Kendrick Lamar.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-number">04</div>
+        <div class="feature-icon">🎵</div>
+        <div class="feature-title">Spotify-Powered Discovery</div>
+        <p class="feature-desc">Connect Spotify and let Wax & Know read your taste. Get vinyl recommendations tailored to what you actually listen to — with the story of why each record matters.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-number">05</div>
+        <div class="feature-icon">🗺️</div>
+        <div class="feature-title">Genre Universe Explorer</div>
+        <p class="feature-desc">New to soul? Start with a curated learning arc — from accessible classics to deep cuts — with cultural context, key instruments, and recommended reading at every step.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-number">06</div>
+        <div class="feature-icon">🔗</div>
+        <div class="feature-title">The Lineage Map</div>
+        <p class="feature-desc">See how bebop became hard bop became soul became hip hop. Every node in the map is a vinyl to discover — and a story worth knowing before you buy.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- GENRES -->
+  <section class="genres-section">
+    <div class="genres-label">Explore Every Genre</div>
+    <h2 class="genres-heading">From <em>Miles Davis</em> to J Dilla. Every thread connected.</h2>
+    <div class="genre-pills">
+      <div class="genre-pill featured">Blue Note Jazz</div>
+      <div class="genre-pill featured">Hip Hop</div>
+      <div class="genre-pill featured">Soul</div>
+      <div class="genre-pill">Bebop</div>
+      <div class="genre-pill">Hard Bop</div>
+      <div class="genre-pill">Modal Jazz</div>
+      <div class="genre-pill">Funk</div>
+      <div class="genre-pill">Neo Soul</div>
+      <div class="genre-pill">Boom Bap</div>
+      <div class="genre-pill">West Coast Hip Hop</div>
+      <div class="genre-pill">Psychedelic Rock</div>
+      <div class="genre-pill">Reggae & Dub</div>
+      <div class="genre-pill">Classic Blues</div>
+      <div class="genre-pill">Ambient & Electronic</div>
+      <div class="genre-pill">Avant-Garde Jazz</div>
+      <div class="genre-pill">Classic Rock</div>
+      <div class="genre-pill">Latin Jazz</div>
+      <div class="genre-pill">Afrobeat</div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how" id="how">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-heading">From novice to collector, one record at a time.</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">Step 01</div>
+        <div class="step-bar"></div>
+        <div class="step-title">Build Your Collection</div>
+        <p class="step-desc">Scan barcodes, import from Amazon or Discogs, or add manually. Your collection, your way.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">Step 02</div>
+        <div class="step-bar"></div>
+        <div class="step-title">Connect Spotify</div>
+        <p class="step-desc">Link your Spotify account so Wax & Know understands your taste at a deep level.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">Step 03</div>
+        <div class="step-bar"></div>
+        <div class="step-title">Explore & Learn</div>
+        <p class="step-desc">Dive into genre timelines, sample maps, and curated learning paths built for your level.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">Step 04</div>
+        <div class="step-bar"></div>
+        <div class="step-title">Buy at the Right Price</div>
+        <p class="step-desc">Track prices on Amazon, get drop alerts, and buy through our affiliate links — no extra cost to you.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOTTOM CTA -->
+  <section class="cta-section">
+    <div class="hero-eyebrow">Early Access</div>
+    <h2>Be first to <em>drop the needle.</em></h2>
+    <p>Join the waitlist and get early access when we launch on iOS.</p>
+    <div class="cta-form" id="cta-form-wrap">
+      <input type="email" id="cta-email" placeholder="Your email address" />
+      <button onclick="submitWaitlist('cta')">Join Waitlist</button>
+    </div>
+    <div class="cta-success" id="cta-success">✦ You're on the list.</div>
+  </section>
+
+  <footer>
+    <div class="footer-logo">Wax <span>&</span> Know</div>
+    <div class="footer-links">
+      <a href="mailto:hello@waxandknow.com">hello@waxandknow.com</a>
+      <a href="#" onclick="showPrivacy(event)">Privacy Policy</a>
+    </div>
+    <div class="footer-copy">© 2026 Wax & Know. All rights reserved.</div>
+  </footer>
+
+</div>
+
+<!-- PRIVACY POLICY PAGE -->
+<div id="privacy-page" style="display:none; background: var(--cream); min-height:100vh;">
+  <header>
+    <div class="logo">Wax <span>&</span> Know</div>
+  </header>
+  <div id="privacy">
+    <a class="back-link" onclick="showMain(event)" href="#">← Back to Home</a>
+    <h2>Privacy Policy</h2>
+    <span class="updated">Last updated: April 2026</span>
+
+    <p>Wax & Know ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and share information about you when you use our mobile application and website (collectively, the "Service").</p>
+
+    <h3>1. Information We Collect</h3>
+    <p>We collect information you provide directly to us, including:</p>
+    <ul>
+      <li>Email address (when you join our waitlist or create an account)</li>
+      <li>Vinyl collection data you add manually or by scanning</li>
+      <li>Spotify listening data (only with your explicit permission)</li>
+      <li>Amazon order history (only when you choose to import it)</li>
+    </ul>
+
+    <h3>2. How We Use Your Information</h3>
+    <p>We use the information we collect to:</p>
+    <ul>
+      <li>Provide, maintain, and improve our Service</li>
+      <li>Send you price drop alerts and notifications you have requested</li>
+      <li>Generate personalised vinyl recommendations</li>
+      <li>Send you updates about the app launch (waitlist emails only)</li>
+      <li>Comply with legal obligations</li>
+    </ul>
+
+    <h3>3. Amazon Associates Disclosure</h3>
+    <p>Wax & Know is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for us to earn fees by linking to Amazon.com. When you purchase a vinyl record through a link in our app, we may earn a small commission at no additional cost to you.</p>
+
+    <h3>4. Spotify Data</h3>
+    <p>With your permission, we access your Spotify listening history and saved albums solely to generate personalised vinyl recommendations. We do not store your Spotify credentials. You can revoke this permission at any time in your Spotify account settings.</p>
+
+    <h3>5. Data Sharing</h3>
+    <p>We do not sell your personal information. We may share information with:</p>
+    <ul>
+      <li>Service providers who help us operate the Service (e.g. Supabase for database hosting)</li>
+      <li>Analytics providers to understand how the Service is used</li>
+      <li>Law enforcement when required by law</li>
+    </ul>
+
+    <h3>6. Data Retention</h3>
+    <p>We retain your information for as long as your account is active or as needed to provide the Service. You may request deletion of your account and associated data at any time by contacting us at hello@waxandknow.com.</p>
+
+    <h3>7. Your Rights</h3>
+    <p>Depending on your location, you may have the right to access, correct, or delete your personal information. To exercise these rights, contact us at hello@waxandknow.com.</p>
+
+    <h3>8. Children's Privacy</h3>
+    <p>Our Service is not directed to children under 13. We do not knowingly collect personal information from children under 13.</p>
+
+    <h3>9. Changes to This Policy</h3>
+    <p>We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new policy on this page with an updated date.</p>
+
+    <h3>10. Contact Us</h3>
+    <p>If you have questions about this Privacy Policy, please contact us at <a href="mailto:hello@waxandknow.com" style="color: var(--amber);">hello@waxandknow.com</a>.</p>
+  </div>
+</div>
+
+<script>
+  // Simple waitlist using Formspree (free tier - replace YOUR_FORM_ID)
+  async function submitWaitlist(source) {
+    const email = document.getElementById(source === 'hero' ? 'hero-email' : 'cta-email').value;
+    if (!email || !email.includes('@')) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+
+    // Store locally for now — replace with Formspree or similar
+    const existing = JSON.parse(localStorage.getItem('wak_waitlist') || '[]');
+    if (!existing.includes(email)) {
+      existing.push(email);
+      localStorage.setItem('wak_waitlist', JSON.stringify(existing));
+    }
+
+    if (source === 'hero') {
+      document.getElementById('hero-form-wrap').style.display = 'none';
+      document.getElementById('hero-success').style.display = 'block';
+    } else {
+      document.getElementById('cta-form-wrap').style.display = 'none';
+      document.getElementById('cta-success').style.display = 'block';
+    }
+  }
+
+  function showPrivacy(e) {
+    e.preventDefault();
+    document.getElementById('main-page').style.display = 'none';
+    document.getElementById('privacy-page').style.display = 'block';
+    window.scrollTo(0, 0);
+  }
+
+  function showMain(e) {
+    e.preventDefault();
+    document.getElementById('privacy-page').style.display = 'none';
+    document.getElementById('main-page').style.display = 'block';
+    window.scrollTo(0, 0);
+  }
+</script>
+
+</body>
+</html>
