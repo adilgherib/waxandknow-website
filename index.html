@@ -1057,27 +1057,36 @@
 </div>
 
 <script>
-  // Simple waitlist using Formspree (free tier - replace YOUR_FORM_ID)
+  // Simple waitlist using Formspree
   async function submitWaitlist(source) {
-    const email = document.getElementById(source === 'hero' ? 'hero-email' : 'cta-email').value;
+    const emailId = source === 'hero' ? 'hero-email' : 'cta-email';
+    const email = document.getElementById(emailId).value;
+
     if (!email || !email.includes('@')) {
       alert('Please enter a valid email address.');
       return;
     }
 
-    // Store locally for now — replace with Formspree or similar
-    const existing = JSON.parse(localStorage.getItem('wak_waitlist') || '[]');
-    if (!existing.includes(email)) {
-      existing.push(email);
-      localStorage.setItem('wak_waitlist', JSON.stringify(existing));
-    }
+    try {
+      const res = await fetch('https://formspree.io/f/mvzdygey', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, source })
+      });
 
-    if (source === 'hero') {
-      document.getElementById('hero-form-wrap').style.display = 'none';
-      document.getElementById('hero-success').style.display = 'block';
-    } else {
-      document.getElementById('cta-form-wrap').style.display = 'none';
-      document.getElementById('cta-success').style.display = 'block';
+      if (res.ok) {
+        if (source === 'hero') {
+          document.getElementById('hero-form-wrap').style.display = 'none';
+          document.getElementById('hero-success').style.display = 'block';
+        } else {
+          document.getElementById('cta-form-wrap').style.display = 'none';
+          document.getElementById('cta-success').style.display = 'block';
+        }
+      } else {
+        alert('Something went wrong. Please try again.');
+      }
+    } catch (err) {
+      alert('Something went wrong. Please try again.');
     }
   }
 
