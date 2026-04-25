@@ -1,0 +1,7 @@
+This is the Wax & Know marketing website.
+- Single page HTML/CSS/JS, no framework
+- Retro warm aesthetic, cream and amber colors
+- No build tools, no npm, pure HTML files
+- Privacy policy is inline on the same page
+- Email collection via Formspree
+- Deployed on Vercel
