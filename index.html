@@ -1057,10 +1057,10 @@
 </div>
 
 <script>
-  // Simple waitlist using Formspree
+  // Waitlist signup via Vercel API -> Resend
   async function submitWaitlist(source) {
     const emailId = source === 'hero' ? 'hero-email' : 'cta-email';
-    const email = document.getElementById(emailId).value;
+    const email = document.getElementById(emailId).value.trim();
 
     if (!email || !email.includes('@')) {
       alert('Please enter a valid email address.');
@@ -1068,7 +1068,7 @@
     }
 
     try {
-      const res = await fetch('https://formspree.io/f/mvzdygey', {
+      const res = await fetch('/api/waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, source })
