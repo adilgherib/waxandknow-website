@@ -12,8 +12,36 @@ module.exports = async (req, res) => {
     return res.status(400).json({ error: 'Invalid email' });
   }
 
+  // 1) Save the signup to Supabase prod (waitlist_signups) BEFORE anything else.
+  // URL and publishable key are public by design; the RPC is the only write path
+  // (table has RLS on with no policies, so anon cannot read the list).
+  const SUPABASE_URL = process.env.SUPABASE_URL || 'https://pzeswfnwuoeqtxppvryf.supabase.co';
+  const SUPABASE_KEY = process.env.SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_GfzRAZRD8pVvo1EcOoGlnw_SCkWqUb0';
+  try {
+    const dbRes = await fetch(`${SUPABASE_URL}/rest/v1/rpc/join_waitlist`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        apikey: SUPABASE_KEY,
+        Authorization: `Bearer ${SUPABASE_KEY}`
+      },
+      body: JSON.stringify({ p_email: email, p_source: String(source) })
+    });
+    if (!dbRes.ok) {
+      const errorText = await dbRes.text();
+      console.error('waitlist save failed', dbRes.status, errorText);
+      return res.status(dbRes.status === 400 ? 400 : 502).json({ error: 'Could not save signup' });
+    }
+  } catch (error) {
+    console.error('waitlist save error', error);
+    return res.status(502).json({ error: 'Could not save signup' });
+  }
+
+  // 2) Send the confirmation email. The signup is already saved, so an email
+  // failure is logged but does not fail the request.
   if (!process.env.RESEND_API_KEY) {
-    return res.status(500).json({ error: 'Missing RESEND_API_KEY' });
+    console.error('Missing RESEND_API_KEY; signup saved, email skipped');
+    return res.status(200).json({ ok: true, emailed: false });
   }
 
   const html = `
@@ -53,12 +81,13 @@ module.exports = async (req, res) => {
     });
 
     if (!resendRes.ok) {
-      const errorText = await resendRes.text();
-      return res.status(502).json({ error: 'Resend request failed', details: errorText });
+      console.error('Resend failed', resendRes.status, await resendRes.text());
+      return res.status(200).json({ ok: true, emailed: false });
     }
 
-    return res.status(200).json({ ok: true });
+    return res.status(200).json({ ok: true, emailed: true });
   } catch (error) {
-    return res.status(500).json({ error: 'Unexpected server error' });
+    console.error('Resend error', error);
+    return res.status(200).json({ ok: true, emailed: false });
   }
 };
