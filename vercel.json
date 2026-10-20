@@ -3,11 +3,13 @@
   "builds": [
     { "src": "api/**/*.js", "use": "@vercel/node" },
     { "src": "index.html", "use": "@vercel/static" },
-    { "src": "recordshops.html", "use": "@vercel/static" }
+    { "src": "recordshops.html", "use": "@vercel/static" },
+    { "src": "public/**", "use": "@vercel/static" }
   ],
   "routes": [
     { "src": "/api/waitlist", "dest": "/api/waitlist.js" },
     { "src": "/recordshops/?", "headers": { "X-Robots-Tag": "noindex, nofollow" }, "dest": "/recordshops.html" },
+    { "src": "/public/(.*)", "dest": "/public/$1" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
