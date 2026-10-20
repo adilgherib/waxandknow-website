@@ -7,222 +7,485 @@
   <title>Record shops · Wax & Know</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Serif+Display:ital@0;1&family=Karla:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Karla:ital,wght@0,400;0,500;0,600;1,400&family=Playfair+Display:wght@900&display=swap" rel="stylesheet" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --cream: #F5EDD8;
-      --cream-dark: #EDE0C4;
-      --cream-darker: #E0D0A8;
-      --brown-deep: #2C1A0E;
-      --brown-mid: #5C3A1E;
-      --brown-light: #8B5E3C;
+      /* color, locked palette plus tints */
+      --cream: #F5E6C8;
+      --brown: #5C3A1E;
       --amber: #C8822A;
-      --amber-light: #E8A84A;
-      --red-label: #B03A2E;
-      --green-label: #2E6B4F;
-      --groove: #1A0F06;
-      --ink: #1E120A;
+      --red: #8E2B23;
+      --amber-ink: #875723;   /* links, 4.98:1 on cream */
+      --brown-soft: #7B5C40;  /* meta, caption, footer, 4.94:1 */
+      --rule: #D6C4A6;        /* hairlines, image border */
+      --surface: #EED7B0;     /* terms box */
+      --shadow: #5C3A1E24;    /* image shadow */
+
+      /* type */
+      --font-display: "DM Serif Display", Georgia, "Times New Roman", serif;
+      --font-body: "Karla", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-logo: "Playfair Display", Georgia, serif;
+
+      --fs-h1: 2.25rem;     /* 36px mobile */
+      --fs-h2: 1.625rem;    /* 26px */
+      --fs-h3: 1.0625rem;   /* 17px */
+      --fs-lead: 1.125rem;  /* 18px */
+      --fs-body: 1.0625rem; /* 17px */
+      --fs-small: 0.8125rem;/* 13px */
+      --fs-logo: 1.25rem;   /* 20px */
+
+      --lh-tight: 1.1;
+      --lh-heading: 1.2;
+      --lh-h3: 1.4;
+      --lh-body: 1.65;
+      --lh-small: 1.5;
+
+      /* layout */
+      --measure: 680px;
+      --wide: 880px;
+      --gutter: 20px;
+      --radius-card: 4px;
+      --radius-shot: 16px;
+
+      /* spacing */
+      --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px;
+      --s-6: 32px; --s-7: 48px; --s-8: 64px; --s-9: 96px;
+      --section-gap: 40px;
     }
+
+    @media (min-width: 768px) {
+      :root {
+        --fs-h1: 3rem;        /* 48px */
+        --fs-h2: 1.875rem;    /* 30px */
+        --fs-h3: 1.125rem;    /* 18px */
+        --fs-lead: 1.25rem;   /* 20px */
+        --fs-body: 1.125rem;  /* 18px */
+        --fs-small: 0.875rem; /* 14px */
+        --fs-logo: 1.375rem;  /* 22px */
+        --gutter: 32px;
+        --section-gap: 56px;
+      }
+    }
+
+    /* ── BASE ── */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { font-size: 100%; }
 
     body {
-      background-color: var(--cream);
-      color: var(--brown-deep);
-      font-family: 'Karla', sans-serif;
-      font-weight: 300;
-      overflow-x: hidden;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      margin: 0;
+      background: var(--cream);
+      color: var(--brown);
+      font: 400 var(--fs-body)/var(--lh-body) var(--font-body);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      overflow-x: clip;
     }
 
-    /* Grain texture overlay */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
-      opacity: 0.04;
-      pointer-events: none;
-      z-index: 1000;
+    .wrap {
+      max-width: calc(var(--measure) + 2 * var(--gutter));
+      margin-inline: auto;
+      padding-inline: var(--gutter);
     }
 
-    /* ── HEADER ── */
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 2rem 4rem;
-      border-bottom: 1px solid var(--cream-darker);
-    }
-
-    .logo {
-      font-family: 'Playfair Display', serif;
-      font-weight: 900;
-      font-size: 1.5rem;
-      color: var(--brown-deep);
-      letter-spacing: -0.02em;
-    }
-
-    .logo span {
-      color: var(--amber);
-    }
-
-    /* ── PLACEHOLDER ── */
-    main {
-      flex: 1;
-      max-width: 720px;
-      width: 100%;
-      margin: 0 auto;
-      padding: 6rem 2rem;
+    h1, h2 {
+      font-family: var(--font-display);
+      font-weight: 400;
+      color: var(--brown);
     }
 
     h1 {
-      font-family: 'DM Serif Display', serif;
-      font-size: clamp(2.5rem, 4vw, 4rem);
-      line-height: 1.1;
-      color: var(--brown-deep);
-      letter-spacing: -0.03em;
-      margin-bottom: 1rem;
+      font-size: var(--fs-h1);
+      line-height: var(--lh-tight);
+      letter-spacing: -0.5px;
+      margin: 0 0 var(--s-3);
     }
 
-    main p {
-      font-size: 1.1rem;
-      line-height: 1.7;
-      color: var(--brown-mid);
+    h2 {
+      font-size: var(--fs-h2);
+      line-height: var(--lh-heading);
+      letter-spacing: -0.25px;
+      margin: 0 0 var(--s-3);
+      text-wrap: balance;
     }
+
+    p {
+      margin: 0;
+      text-wrap: pretty;
+    }
+
+    ul, ol { margin: 0; }
+
+    p + p,
+    p + ul, p + ol,
+    ul + p, ol + p { margin-top: var(--s-4); }
+
+    strong { font-weight: 600; color: var(--brown); }
+    em { font-style: italic; font-weight: 400; }
+
+    /* ── LINKS ── */
+    a {
+      color: var(--amber-ink);
+      font-weight: 500;
+      text-decoration: underline;
+      text-decoration-color: var(--amber);
+      text-decoration-thickness: 2px;
+      text-underline-offset: 3px;
+    }
+
+    a:visited { color: var(--amber-ink); }
+
+    a:hover,
+    a:focus {
+      color: var(--brown);
+      text-decoration-color: var(--red);
+    }
+
+    a:focus-visible {
+      outline: 2px solid var(--amber);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
+    /* Button token, for future use only */
+    .btn {
+      display: inline-block;
+      padding: 14px 24px;
+      border-radius: 100px;
+      background: var(--brown);
+      color: var(--cream);
+      font: 600 1rem/1 var(--font-body);
+      letter-spacing: 0.5px;
+    }
+
+    .btn:hover { background: var(--amber-ink); }
+
+    /* ── HEADER ── */
+    .site-header {
+      padding-block: var(--s-5);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .logo {
+      font-family: var(--font-logo);
+      font-weight: 900;
+      font-size: var(--fs-logo);
+      line-height: 1;
+      letter-spacing: -0.5px;
+      color: var(--brown);
+    }
+
+    .logo span,
+    .footer-logo span { color: var(--amber); }
+
+    /* ── MAIN ── */
+    main {
+      padding-top: 40px;
+      padding-bottom: var(--s-8);
+    }
+
+    .page-intro { margin-bottom: 40px; }
+
+    .meta {
+      margin: 0;
+      font-size: var(--fs-small);
+      font-weight: 500;
+      line-height: var(--lh-small);
+      letter-spacing: 0.25px;
+      color: var(--brown-soft);
+    }
+
+    section + section { margin-top: var(--section-gap); }
+
+    .intro-lead {
+      font-size: var(--fs-lead);
+      line-height: 1.6;
+    }
+
+    /* ── LISTS ── */
+    #show ul {
+      list-style: none;
+      padding-left: 1.25em;
+    }
+
+    #show li { position: relative; }
+    #show li + li { margin-top: var(--s-2); }
+
+    #show li::before {
+      content: '';
+      position: absolute;
+      left: -1.25em;
+      top: 0.7em;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--amber);
+    }
+
+    .terms-list {
+      list-style: none;
+      counter-reset: term;
+      padding: 20px;
+      background: var(--surface);
+      border-radius: var(--radius-card);
+    }
+
+    .terms-list li {
+      counter-increment: term;
+      position: relative;
+      padding-left: 40px;
+    }
+
+    .terms-list li + li { margin-top: 20px; }
+
+    .terms-list li::before {
+      content: counter(term);
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      line-height: 1;
+      color: var(--amber);
+    }
+
+    .terms h3 {
+      margin: 0 0 var(--s-1);
+      font-family: var(--font-body);
+      font-size: var(--fs-h3);
+      font-weight: 600;
+      line-height: var(--lh-h3);
+      color: var(--brown);
+    }
+
+    .terms-list li p { margin: 0; }
+
+    /* ── SCREENSHOTS ── */
+    .shots { margin: var(--s-5) 0; }
+
+    .shots-row {
+      display: flex;
+      gap: var(--s-4);
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding: 4px 20px 16px;
+      margin-inline: -20px;
+      scroll-padding-inline: 20px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .shots-row::-webkit-scrollbar { display: none; }
+
+    .shots img {
+      flex: 0 0 240px;
+      width: 240px;
+      height: auto;
+      aspect-ratio: 800 / 1614;
+      object-fit: cover;
+      object-position: top;
+      scroll-snap-align: start;
+      border-radius: var(--radius-shot);
+      border: 1px solid var(--rule);
+      box-shadow: 0 4px 12px var(--shadow);
+      background: var(--cream);
+    }
+
+    .shots figcaption {
+      margin-top: var(--s-2);
+      font-size: var(--fs-small);
+      font-style: italic;
+      font-weight: 400;
+      line-height: var(--lh-small);
+      letter-spacing: 0.25px;
+      color: var(--brown-soft);
+    }
+
+    /* ── SIGN-OFF ── */
+    .signoff { margin-top: 40px; }
+    .signoff p + p { margin-top: var(--s-1); }
+    .signoff p:last-child { font-weight: 500; }
 
     /* ── FOOTER ── */
-    footer {
-      padding: 2rem 4rem;
-      border-top: 1px solid var(--cream-darker);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
+    .site-footer {
+      padding: var(--s-6) 0 40px;
+      border-top: 1px solid var(--rule);
+      font-size: var(--fs-small);
+      font-weight: 500;
+      line-height: var(--lh-small);
+      letter-spacing: 0.25px;
+      color: var(--brown-soft);
     }
 
     .footer-logo {
-      font-family: 'Playfair Display', serif;
+      font-family: var(--font-logo);
       font-weight: 900;
       font-size: 1rem;
-      color: var(--brown-deep);
+      line-height: 1;
+      letter-spacing: -0.25px;
+      color: var(--brown);
     }
 
-    .footer-logo span { color: var(--amber); }
-
-    .footer-links {
+    .footer-row {
       display: flex;
-      gap: 2rem;
-    }
-
-    .footer-links a {
-      font-size: 0.75rem;
-      letter-spacing: 0.08em;
-      color: var(--brown-light);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    .footer-links a:hover { color: var(--amber); }
-
-    .footer-copy {
-      font-size: 0.72rem;
-      color: var(--brown-light);
-      letter-spacing: 0.04em;
-    }
-
-    /* ── PREVIEW IMAGES ── */
-    .preview-images {
-      display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: flex-start;
-      gap: 1.5rem;
-      width: calc(3 * 260px + 2 * 1.5rem);
-      max-width: calc(100vw - 4rem);
-      margin: 2rem 0 1rem 50%;
-      transform: translateX(-50%);
+      gap: var(--s-2);
+      margin-top: var(--s-2);
     }
 
-    .preview-images img {
-      flex: 0 1 260px;
-      width: 260px;
-      max-width: 100%;
-      height: auto;
-      border-radius: 16px;
-      box-shadow: 2px 4px 12px rgba(44,26,14,0.12);
-    }
+    /* ── DESKTOP ── */
+    @media (min-width: 768px) {
+      main {
+        padding-top: var(--s-8);
+        padding-bottom: var(--s-9);
+      }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      header { padding: 1.5rem 2rem; }
-      main { padding: 4rem 2rem; }
-      footer { padding: 2rem; flex-direction: column; text-align: center; }
-      .preview-images { flex-direction: column; align-items: center; width: auto; max-width: none; margin: 2rem 0 1rem; transform: none; }
-      .preview-images img { flex: none; }
+      .page-intro { margin-bottom: var(--s-7); }
+
+      h2 { margin-bottom: var(--s-4); }
+
+      .terms-list { padding: var(--s-6); }
+
+      .shots {
+        width: min(var(--wide), 100vw - 64px);
+        margin-block: var(--s-6);
+        margin-inline: calc(50% - min(var(--wide), 100vw - 64px) / 2);
+      }
+
+      .shots-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--s-6);
+        align-items: start;
+        overflow: visible;
+        padding: 0;
+        margin-inline: 0;
+      }
+
+      .shots img {
+        width: 100%;
+        scroll-snap-align: none;
+      }
+
+      .shots figcaption {
+        max-width: var(--measure);
+        margin: var(--s-4) auto 0;
+        text-align: center;
+      }
+
+      .footer-row {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: var(--s-2) var(--s-5);
+        margin-top: var(--s-3);
+      }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <div class="logo">Wax <span>&</span> Know</div>
+  <header class="site-header">
+    <div class="wrap"><div class="logo">Wax <span>&amp;</span> Know</div></div>
   </header>
 
-  <main>
-    <h1>Wax &amp; Know for record shops</h1>
-    <p><em>20 October 2026</em></p>
+  <main class="wrap">
+    <header class="page-intro">
+      <h1>Wax &amp; Know for record shops</h1>
+      <p class="meta"><time datetime="2026-10-20">20 October 2026</time></p>
+    </header>
 
-    <h2>Help record hunters find your shop</h2>
-    <p>Wax &amp; Know is an app for people who love vinyl and the stories behind records. We're building it for people who travel and look for record shops wherever they land, but rarely know what a shop carries before they walk in. We want to help them find shops like yours and come through your door.</p>
+    <section id="find">
+      <h2>Help record hunters find your shop</h2>
+      <p class="intro-lead">Wax &amp; Know is an app for people who love vinyl and the stories behind records. We're building it for people who travel and look for record shops wherever they land, but rarely know what a shop carries before they walk in. We want to help them find shops like yours and come through your door.</p>
+    </section>
 
-    <h2>How it works</h2>
-    <p>Collectors keep a list of the records they're looking for (wanted) and the genre they love. When a record shop has something that matches, Wax &amp; Know points them to it, with a link straight to your shop. They buy from you, in your shop or on your website, never through us.</p>
-    <div class="preview-images">
-      <img src="/public/recordshops/shop-1-800.png" width="800" height="1614" loading="lazy" alt="Wax &amp; Know app showing a record shop 1" />
-      <img src="/public/recordshops/shop-2-800.png" width="800" height="1627" loading="lazy" alt="Wax &amp; Know app showing a record shop 2" />
-      <img src="/public/recordshops/shop-3-800.png" width="800" height="1739" loading="lazy" alt="Wax &amp; Know app showing a record shop 3" />
-    </div>
-    <p><em>Preview images. Example shop, not a real listing.</em></p>
+    <section id="how">
+      <h2>How it works</h2>
+      <p>Collectors keep a list of the records they're looking for (wanted) and the genre they love. When a record shop has something that matches, Wax &amp; Know points them to it, with a link straight to your shop. They buy from you, in your shop or on your website, never through us.</p>
+      <figure class="shots">
+        <div class="shots-row">
+          <img src="/public/recordshops/shop-1-800.png" width="800" height="1614" loading="lazy" alt="Wax &amp; Know app showing a record shop 1" />
+          <img src="/public/recordshops/shop-2-800.png" width="800" height="1627" loading="lazy" alt="Wax &amp; Know app showing a record shop 2" />
+          <img src="/public/recordshops/shop-3-800.png" width="800" height="1739" loading="lazy" alt="Wax &amp; Know app showing a record shop 3" />
+        </div>
+        <figcaption>Preview images. Example shop, not a real listing.</figcaption>
+      </figure>
+    </section>
 
-    <h2>What we'd show</h2>
-    <ul>
-      <li>Your records: artist, title, label, your price, your photo, and whether it's sold out.</li>
-      <li>Your shop: name and logo, address with a map and directions, opening hours, and links to your website and Instagram.</li>
-    </ul>
+    <section id="show">
+      <h2>What we'd show</h2>
+      <ul>
+        <li><strong>Your records:</strong> artist, title, label, your price, your photo, and whether it's sold out.</li>
+        <li><strong>Your shop:</strong> name and logo, address with a map and directions, opening hours, and links to your website and Instagram.</li>
+      </ul>
+    </section>
 
-    <h2>What it costs you</h2>
-    <p>Nothing, it’s FREE now and always.</p>
+    <section id="cost">
+      <h2>What it costs you</h2>
+      <p>Nothing, it’s FREE now and always.</p>
+    </section>
 
-    <h2>The terms</h2>
-    <p>By replying "yes" to our email or Instagram message, your shop ("you") gives Wax &amp; Know ("we") permission as follows:</p>
-    <ol>
-      <li><strong>What we show.</strong> For records you list for sale, we may show the artist, title, label, price, your product photo and availability (including "sold out") in the Wax &amp; Know app.</li>
-      <li><strong>How we get it.</strong> We may read your public shop pages once a week, or use a file you send us (for example a CSV or a shared drive). We will never access anything that needs a login.</li>
-      <li><strong>Link to you.</strong> Every record we show links to your shop: the record's own page where we can, otherwise your shop's home page.</li>
-      <li><strong>Photo credit.</strong> Each of your photos is shown with "Photo courtesy of your shop".</li>
-      <li><strong>Prices and availability.</strong> We show each price labelled "price on 20 October 2026, check with the shop". We do not sell anything or take payment for your records.</li>
-      <li><strong>Cost.</strong> FREE for you, now and always. We will never charge you for this listing.</li>
-      <li><strong>Removal.</strong> You can ask us at any time, by email or Instagram message, to change or remove any or all of your records. We will do it, usually within 7 days and never more than 14, and stop checking your shop.</li>
-      <li><strong>About us.</strong> Wax &amp; Know is a solo record lover project. I’m building this app as I always struggled to find record shops while traveling or if a record I have been chasing for months shows up in my hometown recordshop.</li>
-    </ol>
-    <p>If we ever change these terms, we'll post a new version with a new date and tell you before it applies to your shop. Until you agree to the new version, the one you said yes to stays in place.</p>
+    <section id="terms" class="terms">
+      <h2>The terms</h2>
+      <p>By replying "yes" to our email or Instagram message, your shop ("you") gives Wax &amp; Know ("we") permission as follows:</p>
+      <ol class="terms-list">
+        <li>
+          <h3>What we show.</h3>
+          <p>For records you list for sale, we may show the artist, title, label, price, your product photo and availability (including "sold out") in the Wax &amp; Know app.</p>
+        </li>
+        <li>
+          <h3>How we get it.</h3>
+          <p>We may read your public shop pages once a week, or use a file you send us (for example a CSV or a shared drive). We will never access anything that needs a login.</p>
+        </li>
+        <li>
+          <h3>Link to you.</h3>
+          <p>Every record we show links to your shop: the record's own page where we can, otherwise your shop's home page.</p>
+        </li>
+        <li>
+          <h3>Photo credit.</h3>
+          <p>Each of your photos is shown with "Photo courtesy of your shop".</p>
+        </li>
+        <li>
+          <h3>Prices and availability.</h3>
+          <p>We show each price labelled "price on 20 October 2026, check with the shop". We do not sell anything or take payment for your records.</p>
+        </li>
+        <li>
+          <h3>Cost.</h3>
+          <p>FREE for you, now and always. We will never charge you for this listing.</p>
+        </li>
+        <li>
+          <h3>Removal.</h3>
+          <p>You can ask us at any time, by email or Instagram message, to change or remove any or all of your records. We will do it, usually within 7 days and never more than 14, and stop checking your shop.</p>
+        </li>
+        <li>
+          <h3>About us.</h3>
+          <p>Wax &amp; Know is a solo record lover project. I’m building this app as I always struggled to find record shops while traveling or if a record I have been chasing for months shows up in my hometown recordshop.</p>
+        </li>
+      </ol>
+      <p>If we ever change these terms, we'll post a new version with a new date and tell you before it applies to your shop. Until you agree to the new version, the one you said yes to stays in place.</p>
+    </section>
 
-    <h2>Ready to join?</h2>
-    <p>Just reply "yes" to our email or Instagram message. Questions, changes or removal: <a href="mailto:hello@waxandknow.com">hello@waxandknow.com</a> or <a href="https://www.instagram.com/waxandknow/">@waxandknow</a> on Instagram.</p>
-
-    <p><em>Thanks for keeping record shops alive.</em></p>
-    <p>Isaac, founder of Wax &amp; Know</p>
+    <section id="join">
+      <h2>Ready to join?</h2>
+      <p>Just reply "yes" to our email or Instagram message. Questions, changes or removal: <a href="mailto:hello@waxandknow.com">hello@waxandknow.com</a> or <a href="https://www.instagram.com/waxandknow/">@waxandknow</a> on Instagram.</p>
+      <div class="signoff">
+        <p><em>Thanks for keeping record shops alive.</em></p>
+        <p>Isaac, founder of Wax &amp; Know</p>
+      </div>
+    </section>
   </main>
 
-  <footer>
-    <div class="footer-logo">Wax <span>&</span> Know</div>
-    <div class="footer-links">
-      <a href="mailto:hello@waxandknow.com">hello@waxandknow.com</a>
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-logo">Wax <span>&amp;</span> Know</div>
+      <div class="footer-row">
+        <a href="mailto:hello@waxandknow.com">hello@waxandknow.com</a>
+        <div class="footer-copy">© 2026 Wax &amp; Know. All rights reserved.</div>
+      </div>
     </div>
-    <div class="footer-copy">© 2026 Wax & Know. All rights reserved.</div>
   </footer>
 
 </body>
