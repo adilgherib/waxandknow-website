@@ -134,11 +134,34 @@
       letter-spacing: 0.04em;
     }
 
+    /* ── PREVIEW IMAGES ── */
+    .preview-images {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 1.5rem;
+      width: calc(3 * 260px + 2 * 1.5rem);
+      max-width: calc(100vw - 4rem);
+      margin: 2rem 0 1rem 50%;
+      transform: translateX(-50%);
+    }
+
+    .preview-images img {
+      flex: 0 1 260px;
+      width: 260px;
+      max-width: 100%;
+      height: auto;
+      border-radius: 16px;
+      box-shadow: 2px 4px 12px rgba(44,26,14,0.12);
+    }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
       header { padding: 1.5rem 2rem; }
       main { padding: 4rem 2rem; }
       footer { padding: 2rem; flex-direction: column; text-align: center; }
+      .preview-images { flex-direction: column; align-items: center; width: auto; max-width: none; margin: 2rem 0 1rem; transform: none; }
+      .preview-images img { flex: none; }
     }
   </style>
 </head>
@@ -157,7 +180,11 @@
 
     <h2>How it works</h2>
     <p>Collectors keep a list of the records they're looking for (wanted) and the genre they love. When a record shop has something that matches, Wax &amp; Know points them to it, with a link straight to your shop. They buy from you, in your shop or on your website, never through us.</p>
-    <div class="preview-images"></div>
+    <div class="preview-images">
+      <img src="/public/recordshops/shop-1-800.png" width="800" height="1614" loading="lazy" alt="Wax &amp; Know app showing a record shop 1" />
+      <img src="/public/recordshops/shop-2-800.png" width="800" height="1627" loading="lazy" alt="Wax &amp; Know app showing a record shop 2" />
+      <img src="/public/recordshops/shop-3-800.png" width="800" height="1739" loading="lazy" alt="Wax &amp; Know app showing a record shop 3" />
+    </div>
     <p><em>Preview images. Example shop, not a real listing.</em></p>
 
     <h2>What we'd show</h2>
